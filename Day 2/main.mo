@@ -20,26 +20,23 @@ actor {
       Debug.print(debug_show(char));
     };
   };
-
-  public func null_or_nat(n: ?Nat) : async Text {
-    switch(n) {
-      case(null) {
-        return("null");
-      };
-      case(?n) {
-        return ("input is " # Nat.toText(n)); 
-      };
+  
+  // Challenge 1
+  public func nat_to_nat8(n : Nat) : async Nat8 {
+    if (n < 256) {
+      return (Nat8.fromNat(n));
+    } else {
+      throw Error.reject("\nThis is not possible\nIt cannot be done.\nIt is beyond the grasp of mortals.");
+      return 0;
     };
   };
 
-  public func checkif(a : [Nat], b : Nat) : async ?Nat {
-    let whoknowwhat = func(n : Nat) : Bool {
-      if(n == b) { return true;} else {return false};
-    };
-    return Array.find<Nat>(a, whoknowwhat);
+  // Challenge 2
+  public func max_number_with_n_bits(n : Nat) : async Nat {
+    return (2 ** n - 1);
   };
 
-
+  // Challenge 3
   public func decimal_to_bits(n : Nat) : async Text {
     var text = "";
     var N : Nat = n;
@@ -51,29 +48,18 @@ actor {
     return text;
   };
 
-
-  public func nat_to_nat8(n : Nat) : async Nat8 {
-    if (n < 128) {
-      return (Nat8.fromNat(n));
-    } else {
-      throw Error.reject("\nThis is not possible\nIt cannot be done.\nIt is beyond the grasp of mortals.");
-      return 0;
-    };
-  };
-
-  public func max_number_with_n_bits(n : Nat) : async Nat {
-    return (2**n - 1);
-  };
-
+  // Challenge 4
   public func capitalize_character(c : Char) : async Char {
     Debug.print(debug_show(Prim.charToUpper(c)));
     return (Prim.charToUpper(c));
   };
 
+  // Challenge 5
   public func capitalize_text(t : Text) : async Text {
     return Text.map(t , Prim.charToUpper);
   };
 
+  // Challenge 6
   public func is_inside(t : Text, c : Char) : async Bool {
     for (char in Text.toIter(t)) {
       if (char == c) { return true; }
@@ -81,6 +67,7 @@ actor {
     return false;
   };
 
+  // Challenge 7
   public func trim_whitespace(t : Text) : async Text {
     try {
       return Text.trim(t, #char ' ');
@@ -89,6 +76,20 @@ actor {
     };
   };
 
+  // Challenge 8
+  public func duplicated_character(t : Text) : async Text {
+    let n = t.size();
+    if (n < 2) return t;
+    let c : [Char] = Iter.toArray(t.chars());
+    let sorted = Array.sort(c, Char.compare);
+  
+    for (char in Iter.range(1, n - 1)){
+      if(c[char] == c[char - 1]) {return (Char.toText(c[char]))}
+    };
+    return t;
+  };
+
+  // Challenge 9
   public func size_in_bytes(t : Text) : async Nat {
     var bytes_needed = 0;
     for (char in t.chars()){
@@ -101,6 +102,7 @@ actor {
     return bytes_needed;
   };
 
+  // Challenge 10
   public func bubble_sort(array : [Nat]) : async [Nat] {
     let n = array.size();
     var workingArray = Array.thaw<Nat>(array);
@@ -116,6 +118,9 @@ actor {
     return Array.freeze<Nat>(workingArray);
   };
 
+  // Challenge 11
+
+  // Challenge 12
   let dayow : [Text] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   public func day_of_week(n : Nat) : async ?Text {
     if (n <= 8) {
@@ -124,6 +129,7 @@ actor {
     } else { return null; };
   };
 
+  // Challenge 13
   public func populate_array(array : [?Nat]) : async [Nat] {
     let populate = func (a : ?Nat) : Nat {
       switch(a) {
@@ -137,10 +143,14 @@ actor {
     return b;
   };
 
+  // Challenge 14
+
+  // Challenge 15
   public func squared_array(array : [Nat]) : async [Nat] {
     return (Array.map<Nat, Nat>(array, func (a : Nat) {return a**2;}))
   };
 
+  // Challenge 16
   public func increase_by_index(array : [Nat]) : async [Nat]{
     var index_count = 0;
     let translate = func (a : Nat) : Nat {
@@ -151,18 +161,7 @@ actor {
     return (Array.map<Nat, Nat>(array, translate));
   };
 
-  public func duplicated_character(t : Text) : async Text {
-    let n = t.size();
-    if (n < 2) return t;
-    let c : [Char] = Iter.toArray(t.chars());
-    let sorted = Array.sort(c, Char.compare);
-  
-    for (char in Iter.range(1, n - 1)){
-      if(c[char] == c[char - 1]) {return (Char.toText(c[char]))}
-    };
-    return t;
-  };
-
+  // Challenge 17
   let f = func contain<A>(arr : [A], a : A, f : (A, A) -> Bool) : Bool {
       return Array.foldLeft<A, Bool>(arr, false, func(result, current) {
         if (f(current, a)) return true;
