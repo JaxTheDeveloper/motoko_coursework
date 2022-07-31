@@ -1,0 +1,21 @@
+type Customer = 
+ record {
+   Birthday: text;
+   Name: text;
+   Phone: text;
+   Sex: bool;
+ };
+service : {
+  createAccount: (text, text, text, bool) -> (bool);
+  delete_account: (nat) -> (bool);
+  instantiate: (text) -> () oneway;
+  update_account: (nat, text, text, text, bool) -> (bool);
+  view_all_entries: () -> (vec record {
+                                 nat;
+                                 opt Customer;
+                               });
+  view_entry: (nat) -> (vec record {
+                              nat;
+                              opt Customer;
+                            });
+}
